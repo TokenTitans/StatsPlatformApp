@@ -16,6 +16,10 @@ auth_views = Blueprint('auth_views', __name__, template_folder='../templates')
 '''
 Page/Action Routes
 '''    
+
+
+
+
 @auth_views.route('/users', methods=['GET'])
 def get_user_page():
     users = get_all_users()
@@ -31,20 +35,23 @@ def identify_page():
 def login_action():
     data = request.form
     token = login(data['username'], data['password'])
-    response = redirect(request.referrer)
+    response = redirect('/')  # Redirect to root
     if not token:
         flash('Bad username or password given'), 401
+        response = redirect('/loginpage')
     else:
-        flash('Login Successful')
         set_access_cookies(response, token) 
+        flash('Login Successful')
     return response
 
 @auth_views.route('/logout', methods=['GET'])
 def logout_action():
-    response = redirect(request.referrer) 
+    response = redirect('/')  # Redirect to root
     flash("Logged Out!")
     unset_jwt_cookies(response)
     return response
+
+
 
 '''
 API Routes
