@@ -38,6 +38,7 @@ def get_createuser_page():
     return render_template('createuser.html', users=users)
 
 @user_views.route('/createuser', methods=['POST'])
+@jwt_required()
 def create_createuser_action():
     data = request.form
     flash(f"User {data['username']} created!")
@@ -100,6 +101,7 @@ def static_user_page():
 
 #test
 @user_views.route('/reports', methods=['POST'])
+@jwt_required()
 def create_report_action():
 
     officername = request.form.get('officername')
@@ -138,6 +140,7 @@ def create_report_action():
 
 
 @user_views.route('/reports', methods=['GET'])
+@jwt_required()
 def get_report_page():
     reports = get_all_reports()
     exceldatas = get_all_exceldatas()
@@ -149,6 +152,7 @@ def get_reports_action():
     return jsonify(reports)
 
 @user_views.route('/reports', methods=['GET'])
+@jwt_required()
 def show_reports():
     reports = get_all_reports()
     return render_template('reports.html', reports=reports)
