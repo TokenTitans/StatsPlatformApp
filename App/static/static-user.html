@@ -1,51 +1,361 @@
 <!doctype html>
 <html>
   <head>
-  
-     <!--Import Google Icon Font-->
+    <!-- Import Google Icon Font -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!--Let browser know website is optimized for mobile-->
+    <!-- Let browser know website is optimized for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>App Users</title>
+    <title>myeStats</title>
+    <style>
+      body {
+        background-image: url('office.jpg');
+        background-position: absolute;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 150vh;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        font-family: inherit;
+      }
 
+      .sidenav {
+        background-color: #e3f2fd;
+        width: 250px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        overflow: hidden;
+      }
+
+      .sidenav a {
+        color: #0d47a1;
+        font-weight: 600;
+      }
+
+      .sidenav .user-view .name {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .sidenav-trigger {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1000;
+      }
+
+      .sidenav-trigger i {
+        font-size: 32px;
+        color: white;
+      }
+
+      .sidenav-close-wrapper {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1001;
+      }
+
+      .sidenav-close i {
+        font-size: 18px;
+        color: #333;
+        transition: color 0.3s ease;
+      }
+
+      .sidenav-close:hover i {
+        color: #d32f2f;
+        cursor: pointer;
+      }
+
+      .transparent-navbar {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: none;
+        height: 70px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+      }
+
+      .nav-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+      }
+
+      .nav-logo {
+        height: 55px;
+        width: auto;
+        border-radius: 10px;
+        filter: opacity(0.8);
+        display: flex;
+        justify-content: center;
+      }
+
+      .nav-left, .nav-right {
+        display: flex;
+        align-items: center;
+      }
+
+      .centered-icon {
+        padding-bottom: 20px;
+        padding-right: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+
+      #main-content {
+        transition: margin-left 0.3s ease;
+        margin-left: 250px;
+        width: 100%;
+      }
+
+      #main-content.expanded {
+        margin-left: 0 !important;
+      }
+
+      .split {
+        width: 100%;
+        position: absolute;
+        margin: 20px auto;
+        max-width: 720px;
+        top: 60px;
+      }
+
+      .left {
+        left: 0;
+        margin-left: 50px;
+        padding-right: 40px;
+        background-color: white;
+        padding: 2rem;
+        text-align: center;
+        background: #ffffffcc;
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+        border: 10px;
+        width: 710px;
+      }
+
+      .right {
+        margin-right: 50px;
+        right: 0;
+        padding: 10px;
+        text-align: center;
+        background: #ffffffcc;
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+        width: 600px;
+      }
+
+      th {
+        text-align: center;
+        padding: 0 2px 0 2px;
+      }
+
+      .dashboard-container {
+        padding: 2rem;
+        text-align: center;
+        background: #ffffffcc;
+        backdrop-filter: blur(10px);
+        max-width: 1100px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .dashboard-container button {
+        background-color: #2685f1;
+        width: 100%;
+        border: none;
+        color: white;
+        padding: 10px 10px;
+        border-radius: 15px;
+        text-align: center;
+        display: inline-block;
+        font-size: 16px;
+        margin: 2px;
+      }
+
+      .dashboard-container button:hover {
+        background-color: #0e77f0;
+        cursor: pointer;
+      }
+
+      .right .dashboard-container {
+        margin: 10px;
+      }
+
+      .title {
+        font-size: 1.3em;
+        font-weight: 700;
+        text-decoration: underline;
+      }
+
+      .table-section {
+        padding: 20px;
+        border-radius: 15px;
+        overflow-y: auto;
+        max-height: 400px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        font-weight: 500;
+      }
+
+      th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+      }
+
+      th {
+        background-color: #3890d0;
+        color: white;
+      }
+
+      @media (max-width: 768px) {
+        #main-content {
+          margin-left: 0 !important;
+          margin-top: 90px;
+        }
+
+        .split {
+          width: 100%;
+          max-width: none;
+          position: relative;
+          top: 0;
+          margin: 0;
+        }
+
+        .left, .right {
+          width: 100% !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          padding: 15px !important;
+        }
+
+        .sidenav {
+          width: 200px;
+        }
+
+        .sidenav-trigger {
+          left: 10px;
+        }
+
+        .table-section {
+          max-height: 300px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <nav class="purple">
+    <nav class="transparent-navbar">
       <div class="nav-wrapper">
-        <a href="#!" class="brand-logo center">App Users</a>
-        <div class="nav-wrapper">
-            <ul id="nav-mobile" class="left">
-                <li><a href="/">Home</a></li>
-                <li><a href="/users">Users Jinja</a></li>
-                <li><a href="/static/users">Users JS</a></li>
-            </ul>
+        <div class="nav-left centered-icon">
+          <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+            <i class="material-icons">menu</i>
+          </a>
+        </div>              
+        <div class="nav-right">
+          <a href="/"><img src='translogo.png' alt="Logo" class="nav-logo"></a>
         </div>
       </div>
     </nav>
-    
-    <div class="container" id="content">
-        <div class="row">
-            <p>
-                This is table is rendered on the Client. JavaScript code requests the data from <a href="/api/users">/api/users</a> and writes it to this page.
-            </p>
+
+    <ul id="slide-out" class="sidenav">
+      <div class="sidenav-close-wrapper">
+        <a href="#!" class="sidenav-close">
+          <i class="material-icons">close</i>
+        </a>
+      </div>
+      <li>
+        <div class="user-view">
+          <div class="background" style="background-color: #226cc1;"></div>
+          <a href="/"><img src='translogo.png' alt="Logo" style="  width: 200px; height: 60px; border-radius: 8px; padding-left: 15px;"></a>
         </div>
-        <div class="row">
-            <table>
-                <thead>
-                  <tr>
-                    <th>Id</th><th>Username</th>
-                  </tr>
-                </thead>
-                <tbody id="result">
-                
-                <tbody>
-            </table>
+      </li>
+      <li><a href="/"><i class="material-icons">home</i>Home</a></li>
+      <li><a href="/users"><i class="material-icons">cloud_upload</i>Upload Report</a></li>
+      <li><a href="/static/users"><i class="material-icons">description</i>View Report</a></li>
+      <li><a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a></li>
+      <li><a href="/loginpage"><i class="material-icons">lock_open</i>Login</a></li>
+    </ul>
+
+    <div id="main-content">
+      <div class="split left">
+        <div class="title"><p>Entries</p></div>
+
+        <div class="dashboard-container" style="padding: 10px 10px 10px 10px;">
+          <div class="row">
+            <div class="table-section">
+              <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th><th>Officer Name</th><th>Day</th><th>Month</th><th>Year</th><th>Campus</th><th>Sheet</th><th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="result2">
+                  </tbody>
+              </table>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="split right">
+        <div class="title"><p>Data</p></div>
+        <div class="dashboard-container">
+          <div id="excelDataContainer" style="display:none;"></div>
+        </div>
+        <div class="dashboard-container">
+          <div id="pieChartWrapper" style="display:flex; justify-content: center;">
+            <canvas id="pieChart" width="400" height="400"></canvas>
+          </div>
+        </div>
+
+        <div class="dashboard-container">
+          <div id="barChartWrapper" style="display: flex; justify-content: center;">
+            <canvas id="barChart" width="400" height="400"></canvas>
+          </div>
+        </div>  
+      </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="main.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.sidenav');
+        M.Sidenav.init(elems, {
+          edge: 'left',
+          draggable: true
+        });
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+      });
+    </script>
   </body>
 </html>
